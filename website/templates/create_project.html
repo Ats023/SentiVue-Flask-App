@@ -1,0 +1,56 @@
+{% extends "base.html" %}{% block title %}Create-Project{% endblock %}
+{% block content %} 
+<h1>Create New Project</h1>
+<p class="text-muted">Note: Ensure that the csv file contains fields 'Product' and 'Review', both of type string.</p>
+    <form method="POST" action="/analyze-sentiment" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <label for="csv_data"><b>Upload CSV:</b></label>
+        <br>
+        <input type="file" id="csv_data" name="csv_data" accept=".csv" required><br><br>
+        <input class="btn btn-success" type="submit" value="Create Project">
+    </form>
+<br>
+<div id="csvDataPreview">
+    <p class="text-muted"><em>A preview of your file will be shown here:</em></p>
+</div>
+
+    <script>
+        // Function to show CSV data preview
+        function showCSVPreview() {
+            var fileInput = document.getElementById("csv_data");
+            var csvDataPreview = document.getElementById("csvDataPreview");
+    
+            if (fileInput.files.length === 0) {
+                alert("Please select a CSV file first.");
+                csvDataPreview.style.display = "none"; 
+            } else {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+    
+                reader.onload = function (e) {
+                    var csvData = e.target.result;
+                    var lines = csvData.split("\n");
+                    var tableHtml = '<p class="text-muted"><em>preview:</em></p><table class="table table-sm">';
+                    for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    var firstCommaIndex = line.indexOf(",");
+                    var product = line.substring(0, firstCommaIndex);
+                    var review = line.substring(firstCommaIndex + 1);
+                        
+                    tableHtml += "<tr>";
+                    tableHtml += "<td>" + product + "</td>";
+                    tableHtml += "<td>" + review + "</td>";
+                    tableHtml += "</tr>";
+                    }
+                    tableHtml += "</table>";
+                    csvDataPreview.innerHTML = tableHtml;
+                    csvDataPreview.style.display = "block"; 
+                };
+    
+                reader.readAsText(file);
+            }
+        }
+
+        document.getElementById("csv_data").addEventListener("change", showCSVPreview);
+    </script>
+{% endblock %}

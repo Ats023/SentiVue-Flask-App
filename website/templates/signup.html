@@ -1,0 +1,38 @@
+{% extends "base.html" %}{% block title %}signup{% endblock %}
+{% block content %} 
+
+<div class="card card-new-shadow my-3 mx-auto rounded">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img src="static/signup_img.jpg" class="img-fluid rounded-left">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body px-4">
+            <form method="POST">
+                <h3 class="text-center card-title">Sign Up</h3>
+                <h5 class="text-center card-subtitle text-muted">Get started with your SentiVue Account today!</h5>
+                <hr>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <label for="fulltName">Name</label>
+                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirm">Confirm Password</label>
+                    <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" placeholder="Confirm password" required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

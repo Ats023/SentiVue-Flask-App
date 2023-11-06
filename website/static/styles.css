@@ -1,0 +1,10 @@
+.bg-new-gradient {
+    /* background: rgb(145,173,185);
+    background: linear-gradient(16deg, rgba(145,173,185,1) 0%, rgba(219,237,246,1) 33%, rgba(255,255,255,1) 70%); */
+    background: rgb(147,173,186);
+    background: linear-gradient(0deg, rgb(192, 208, 223) 0%, rgb(215, 224, 217) 27%, rgba(252,252,252,1) 70%);
+}
+
+.card-new-shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

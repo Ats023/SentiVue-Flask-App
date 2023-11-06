@@ -1,0 +1,147 @@
+{% extends "base.html" %}{% block title %}Sentiment Analysis{% endblock %}
+{% block content %}
+    <div class="card card-new-shadow rounded my-2">
+    <div class="card-body p-4">
+    <h1>Sentiment Analysis Results</h1>
+    <form method="POST" action="{{ url_for('views.save_sentiment') }}" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <label for="title">Project Title:</label>
+        <input type="text" id="title" name="title" class="form-control" required><br>
+        <label for="desc">Project Description:</label>
+        <textarea name = "desc" id="desc" class="form-control"></textarea>
+        <br>
+        <div class="result">
+        {{ output.to_html(classes=["table table-hover table-sm"])|safe }}
+        </div>
+        <br>
+        <input type="hidden" name="sentiment_data" value="{{ csv_data }}">
+    <div class="result">
+        <canvas id="polarity-chart" width="360" height="180"></canvas>
+        <br>
+        <canvas id="sentiment-chart" width="360" height="180"></canvas>
+        <br>
+        
+        <!--ALL REQUIRED JS CODE-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script>
+            var opData = {{ output.to_json(orient='records')|safe}}
+            var sentimentData = {{ output[['Product', 'Sentiment']].to_dict(orient='records')|tojson|safe }};
+            var scatterplotData = [];
+            var sentimentCounts={};
+            var reviewLabel = ['1','2','3','4','5','6','7','8','9','10'];
+            opData.forEach(function(row) {
+            scatterplotData.push({ x: row.Polarity, y: row.Subjectivity });
+            });
+            sentimentData.forEach(function (entry) {
+            var product = entry['Product'];
+            var sentiment = entry['Sentiment'];
+    
+            if (!sentimentCounts[product]) {
+                sentimentCounts[product] = {};
+            }
+    
+            if (!sentimentCounts[product][sentiment]) {
+                sentimentCounts[product][sentiment] = 0;
+            }
+    
+            sentimentCounts[product][sentiment]++;
+            });
+    
+            var productNames = Object.keys(sentimentCounts);
+            var positiveCounts = productNames.map(function (product) {
+                return sentimentCounts[product]['Positive'] || 0;
+            });
+            var negativeCounts = productNames.map(function (product) {
+                return sentimentCounts[product]['Negative'] || 0;
+            });
+            var neutralCounts = productNames.map(function (product) {
+                return sentimentCounts[product]['Neutral'] || 0;
+            });
+    
+            function createScatter(chartId, data, labels) {
+                var ctx = document.getElementById(chartId).getContext('2d');
+                new Chart(ctx, {
+                    type: 'scatter',
+                    labels: labels,
+                    data: {
+                        datasets: [{
+                            data: data,
+                            pointBackgroundColor: 'rgba(0,0,255,1)',
+                            pointRadius: 5,
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                        },
+                        title: {
+                            display: true,
+                            text: "Polarity vs Subjectivity",
+                            fontSize: 20,
+                        },
+                        scales: {
+                        xAxes: [{ticks: {min: -1, max:1}}],
+                        yAxes: [{ticks: {min: 0, max:1}}],
+                        },
+                        tooltips: {
+                        callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            if (label) {
+                            label += ': ';
+                            }
+                            label += 'Review:' + tooltipItem.index + ', Polarity:' + tooltipItem.xLabel + ', Subjectivity:' + tooltipItem.yLabel;
+                            return label; 
+                            }}
+                        }
+                    }
+                });
+            }
+            
+            var ct = document.getElementById('sentiment-chart').getContext('2d');
+            var sentimentChart = new Chart(ct, {
+                type: 'bar',
+                data: {
+                    labels: productNames,
+                    datasets: [
+                        {
+                            label: 'Positive',
+                            data: positiveCounts,
+                            backgroundColor: 'green',
+                        },
+                        {
+                            label: 'Negative',
+                            data: negativeCounts,
+                            backgroundColor: 'red',
+                        },
+                        {
+                            label: 'Neutral',
+                            data: neutralCounts,
+                            backgroundColor: 'gray',
+                        },
+                    ],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "Sentiment Counts per Product",
+                        fontSize: 20,
+                    },
+                    scales: {
+                        yAxes: [
+                        {scaleLabel: {display: true, labelString: "Review Count"}},
+                        {ticks: {stepSize: 1}}
+                    ],
+                    },
+                },
+            });
+    
+            createScatter('polarity-chart', scatterplotData, reviewLabel);
+            //createHistogram('subjectivity-chart', subjectivityData, ReviewLabel, 'Subjectivity');
+        </script>
+        </div>
+        <button type="submit" class="btn btn-success">Save Project</button>
+    </form>
+    </div>
+    </div>
+{% endblock %}
