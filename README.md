@@ -2,9 +2,9 @@
 A Sentiment Analysis Webapp made using Flask, html, Bootstrap 5 and JavaScript as a part of my 3rd Year B.Tech Software Engineering Project. (Under progress)
 
 # Tech Stack
-Flask, HTML5, CSS3, Bootstrap 4.6.2, JavaScript
-For Sentiment Analysis: TextBlob, pandas
-Database: Flask-SQLAlchemy
+### Flask, HTML5, CSS3, Bootstrap 4.6.2, JavaScript
+### For Sentiment Analysis: TextBlob, pandas
+### Database: Flask-SQLAlchemy
 
 # Features so far:
 1. User account handling: Registration and login.
