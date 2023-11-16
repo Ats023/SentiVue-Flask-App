@@ -11,7 +11,7 @@
         <textarea name = "desc" id="desc" class="form-control"></textarea>
         <br>
         <div class="result">
-        {{ output.to_html(classes=["table table-hover table-sm"])|safe }}
+        {{ output.to_html(classes=["table table-hover table-sm text-right"])|safe }}
         </div>
         <br>
         <input type="hidden" name="sentiment_data" value="{{ csv_data }}">

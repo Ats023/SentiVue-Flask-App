@@ -76,7 +76,6 @@ def project_view(project_id):
     output_df = analyze_sentiment(csv_stream)
     return render_template('view_project.html', project=project, output = output_df, user=current_user)
 
-
 def analyze_sentiment(csv_data):
     df = pd.read_csv(csv_data)
     polarity_scores = []

@@ -1,0 +1,21 @@
+{% extends "admin/master.html" %}
+{% block head_css %}
+{{ super() }}
+<link
+      rel="stylesheet"
+      href="https://bootswatch.com/3/flatly/bootstrap.min.css"
+    />
+{% endblock %}
+
+{% block body %}
+<h1>Welcome Admin </h1><br>
+<p>Current administrative functions:
+  <ul class="list-group">
+    <li class="list-group-item">Read Operation: Overview of all Users</li>
+    <li class="list-group-item">Create Operation: Create+Add Users directly to Database</li>
+    <li class="list-group-item">Delete Operation: Delete User from Database</li>
+  </ul>
+</p>
+<a class="btn btn-info" href="/admin/user">Go to User List</a>
+<a class="btn btn-info" href="/logout">Logout</a>
+{% endblock %}

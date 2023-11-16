@@ -5,18 +5,20 @@
     <div class="card-header text-center p-2 bg-dark"></div>
     <div class="card-body p-4">
     <br>
+    <div id="result">
     <h1>{{ project.title }}</h1>
-    <div class="card-body border border-start text-left text-lg-start text-dark rounded py-2"><p><b>Project Description:</b><br>{{ project.desc }}</p>
-    </div>
+    <h5 class="text-muted">{{ project.date }}</h5>
+    <div class="border border-start text-left text-lg-start text-dark rounded p-2"><p><b>Project Description:</b><br>{{ project.desc }}</p></div>
     <br>
-    <div class="result">
-    {{ output.to_html(classes=["table table-hover table-sm"])|safe }}
+    {{ output.to_html(classes=["table table-hover table-sm text-right"])| safe }}
     <br>
     <canvas id="polarity-chart" width="360" height="180"></canvas>
     <br>
     <canvas id="sentiment-chart" width="360" height="180"></canvas>
     <br>
-    <button type="button" class="btn btn-danger" onClick="deleteProject({{ project.id }})">Delete Project</button>
+    </div>
+    <button type="button" class="btn card-link btn-danger" onClick="deleteProject({{ project.id }})">Delete Project</button>
+    <button type="button" class="btn card-link btn-success" onClick="window.print()">Export as PDF</button>
     <br>
 
     <!--ALL REQUIRED JS CODE-->
@@ -133,9 +135,8 @@
                 },
             },
         });
-
         createScatter('polarity-chart', scatterplotData, reviewLabel);
-        //createHistogram('subjectivity-chart', subjectivityData, ReviewLabel, 'Subjectivity');
+        //createHistogram('subjectivity-chart', subjectivityData, ReviewLabel, 'Subjectivity')
     </script>
     </div>
     </div>

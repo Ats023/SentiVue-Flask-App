@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+from flask_admin import AdminIndexView
 
 auth = Blueprint('auth', __name__)
 
@@ -21,6 +22,23 @@ def login():
         else:
             flash('Email does not exist', category='error')
     return render_template("login.html", user=current_user)
+
+# @auth.route('/admin-login', methods=['GET','POST'])
+# def admin_login():
+#     if request.method == 'POST':
+#         admin_key=request.form.get('admin_key')
+#         password=request.form.get('password')
+#         admin = Admin.query.filter_by(admin_key=admin_key).first()
+#         if admin:
+#             if admin.password==password:
+#                 flash('Logged in as an admin!!', category='success')
+#                 login_user(admin)
+#                 AdminIndexView.index(AdminIndexView())
+#             else:
+#                 flash('Incorrect Password', category='error')
+#         else:
+#             flash('Admin key does not exist', category='error')
+#     return render_template("admin/admin-login.html", user=current_user)
 
 @auth.route('/logout')
 @login_required
